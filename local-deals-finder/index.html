@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Search for used local deals across multiple platforms - Facebook Marketplace, Craigslist, OfferUp, and more"
+    />
+    <title>Local Deals Finder - Search All Marketplaces</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>"
+    />
+  </head>
+  <body>
+    <div class="bg-pattern"></div>
+
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <div class="logo">
+          <span class="logo-icon">🔍</span>
+          <h1>Local Deals Finder</h1>
+        </div>
+        <p class="tagline">
+          Search all marketplaces at once. Find the best local deals.
+        </p>
+      </header>
+
+      <!-- Main Search Card -->
+      <main class="main-card">
+        <div class="popup-warning">
+          <span class="popup-warning-icon">⚠️</span>
+          <span
+            >Please allow pop-ups for this site to open multiple search
+            tabs.</span
+          >
+        </div>
+
+        <form class="search-form" id="searchForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="zipCode">ZIP Code</label>
+              <input
+                type="text"
+                id="zipCode"
+                placeholder="e.g. 90210"
+                pattern="[0-9]{5}"
+                maxlength="5"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="searchQuery">What are you looking for?</label>
+              <input
+                type="text"
+                id="searchQuery"
+                placeholder="e.g. laptop, bicycle, furniture..."
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="radius">Radius</label>
+              <select id="radius">
+                <option value="5">5 miles</option>
+                <option value="10">10 miles</option>
+                <option value="25" selected>25 miles</option>
+                <option value="50">50 miles</option>
+                <option value="100">100 miles</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Platform Selection -->
+          <div class="platforms-section">
+            <h3>
+              <span>Select Platforms</span>
+              <div class="select-controls">
+                <button type="button" id="selectAll">Select All</button>
+                <button type="button" id="selectNone">Deselect All</button>
+              </div>
+            </h3>
+
+            <div class="platforms-grid" id="platformsGrid">
+              <!-- Platforms will be rendered by JavaScript -->
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="search-actions">
+            <button type="submit" class="btn btn-primary">
+              <span>🚀</span>
+              <span>Search All Platforms</span>
+            </button>
+            <button type="button" class="btn btn-secondary" id="saveSearch">
+              <span>⭐</span>
+              <span>Save This Search</span>
+            </button>
+          </div>
+        </form>
+      </main>
+
+      <!-- Favorites Section -->
+      <section class="section" id="favoritesSection">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="section-title-icon">⭐</span>
+            <span>Favorite Searches</span>
+          </h2>
+          <button
+            class="btn btn-secondary btn-icon"
+            id="clearFavorites"
+            title="Clear all favorites"
+          >
+            🗑️
+          </button>
+        </div>
+        <div class="saved-items" id="favoritesList">
+          <div class="empty-state">
+            <div class="empty-state-icon">⭐</div>
+            <p>No favorites yet. Save a search to quick-launch it later!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recent Searches Section -->
+      <section class="section" id="recentSection">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="section-title-icon">🕐</span>
+            <span>Recent Searches</span>
+          </h2>
+          <button
+            class="btn btn-secondary btn-icon"
+            id="clearRecent"
+            title="Clear history"
+          >
+            🗑️
+          </button>
+        </div>
+        <div class="saved-items" id="recentList">
+          <div class="empty-state">
+            <div class="empty-state-icon">🕐</div>
+            <p>Your recent searches will appear here.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p>Local Deals Finder © 2026 • Search smarter, not harder.</p>
+      </footer>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="platforms.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
