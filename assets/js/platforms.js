@@ -9,16 +9,16 @@ const PLATFORMS = [
     icon: '📘',
     buildUrl: (query, zip, radius) => {
       const radiusMap = { 5: 8, 10: 16, 25: 40, 50: 80, 100: 161 };
-      return `https://www.facebook.com/marketplace/category/search/?query=${encodeURIComponent(query)}&radius=${radiusMap[radius] || 40}`;
+      return `https://www.facebook.com/marketplace/search/?query=${encodeURIComponent(query)}&daysSinceListed=1&radius=${radiusMap[radius] || 40}`;
     },
     requiresLogin: true
   },
   {
     id: 'craigslist',
-    name: 'Craigslist',
+    name: 'Craigslist (via SearchTempest)',
     icon: '📝',
     buildUrl: (query, zip, radius) => {
-      return `https://craigslist.org/search/sss?query=${encodeURIComponent(query)}&postal=${zip}&search_distance=${radius}`;
+      return `https://www.searchtempest.com/results?search_string=${encodeURIComponent(query)}&zip_code=${zip}&distance=${radius}`;
     },
     requiresLogin: false
   },
@@ -27,7 +27,7 @@ const PLATFORMS = [
     name: 'OfferUp',
     icon: '🏷️',
     buildUrl: (query, zip, radius) => {
-      return `https://offerup.com/search?q=${encodeURIComponent(query)}&radius=${radius}&delivery_param=all&postal=${zip}`;
+      return `https://offerup.com/search/?q=${encodeURIComponent(query)}`;
     },
     requiresLogin: false
   },
@@ -45,16 +45,16 @@ const PLATFORMS = [
     name: 'GovDeals',
     icon: '🏛️',
     buildUrl: (query, zip, radius) => {
-      return `https://www.govdeals.com/index.cfm?fa=Main.AdvSearch&searchtext=${encodeURIComponent(query)}&zipcode=${zip}&miles=${radius}`;
+      return `https://www.govdeals.com/index.cfm?fa=Main.AdvSearchResultsNew&searchText=${encodeURIComponent(query)}`;
     },
     requiresLogin: false
   },
   {
     id: 'ebay',
-    name: 'eBay Local',
+    name: 'eBay Local Pickup',
     icon: '🛒',
     buildUrl: (query, zip, radius) => {
-      return `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(query)}&LH_PrefLoc=99&_stpos=${zip}&_sadis=${radius}`;
+      return `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(query)}&_stpos=${zip}&_sadis=${radius}&LH_LPickup=1`;
     },
     requiresLogin: false
   },

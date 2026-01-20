@@ -5,7 +5,8 @@
 const STORAGE_KEYS = {
   FAVORITES: 'localDeals_favorites',
   RECENT: 'localDeals_recent',
-  SELECTED_PLATFORMS: 'localDeals_platforms'
+  SELECTED_PLATFORMS: 'localDeals_platforms',
+  THEME: 'localDeals_theme'
 };
 
 const MAX_RECENT = 10;
@@ -23,15 +24,35 @@ const elements = {
   recentList: document.getElementById('recentList'),
   clearFavorites: document.getElementById('clearFavorites'),
   clearRecent: document.getElementById('clearRecent'),
-  toastContainer: document.getElementById('toastContainer')
+  toastContainer: document.getElementById('toastContainer'),
+  themeToggle: document.getElementById('themeToggle')
 };
 
 function init() {
+  initTheme();
   renderPlatforms();
   loadSavedPlatformSelections();
   renderFavorites();
   renderRecent();
   attachEventListeners();
+}
+
+function initTheme() {
+  const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME);
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+  setTheme(theme);
+}
+
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  elements.themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+  localStorage.setItem(STORAGE_KEYS.THEME, theme);
+}
+
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  setTheme(currentTheme === 'dark' ? 'light' : 'dark');
 }
 
 function renderPlatforms() {
@@ -285,6 +306,8 @@ function attachEventListeners() {
   elements.zipCode.addEventListener('input', (e) => {
     e.target.value = e.target.value.replace(/\D/g, '').slice(0, 5);
   });
+
+  elements.themeToggle.addEventListener('click', toggleTheme);
 }
 
 document.addEventListener('DOMContentLoaded', init);

@@ -10,6 +10,7 @@ Search multiple used goods marketplaces at once.
 - Distance radius filter (5-100 miles)
 - Save favorite searches
 - Recent search history
+- Light/dark mode toggle
 
 ## Usage
 
