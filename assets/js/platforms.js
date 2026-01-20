@@ -18,7 +18,7 @@ const PLATFORMS = [
     name: 'Craigslist (via SearchTempest)',
     icon: '📝',
     buildUrl: (query, zip, radius) => {
-      return `https://www.searchtempest.com/results?search_string=${encodeURIComponent(query)}&zip_code=${zip}&distance=${radius}`;
+      return `https://www.searchtempest.com/search?search_string=${encodeURIComponent(query)}&category=8&subcat=sss&cityselect=zip&location=${zip}&maxDist=${radius}#gsc.tab=0`;
     },
     requiresLogin: false
   },
@@ -31,15 +31,7 @@ const PLATFORMS = [
     },
     requiresLogin: false
   },
-  {
-    id: 'mercari',
-    name: 'Mercari',
-    icon: '🛍️',
-    buildUrl: (query, zip, radius) => {
-      return `https://www.mercari.com/search/?keyword=${encodeURIComponent(query)}`;
-    },
-    requiresLogin: false
-  },
+
   {
     id: 'govdeals',
     name: 'GovDeals',
