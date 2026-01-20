@@ -32,15 +32,7 @@ const PLATFORMS = [
     requiresLogin: false
   },
 
-  {
-    id: 'govdeals',
-    name: 'GovDeals',
-    icon: '🏛️',
-    buildUrl: (query, zip, radius) => {
-      return `https://www.govdeals.com/index.cfm?fa=Main.AdvSearchResultsNew&searchText=${encodeURIComponent(query)}`;
-    },
-    requiresLogin: false
-  },
+
   {
     id: 'ebay',
     name: 'eBay Local Pickup',
