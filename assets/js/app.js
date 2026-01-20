@@ -6,10 +6,13 @@ const STORAGE_KEYS = {
   FAVORITES: 'localDeals_favorites',
   RECENT: 'localDeals_recent',
   SELECTED_PLATFORMS: 'localDeals_platforms',
-  THEME: 'localDeals_theme'
+  THEME: 'localDeals_theme',
+  POPUP_TESTED: 'localDeals_popupTested'
 };
 
 const MAX_RECENT = 10;
+
+let popupsAllowed = null; // null = unknown, true = allowed, false = blocked
 
 const elements = {
   searchForm: document.getElementById('searchForm'),
@@ -35,6 +38,7 @@ function init() {
   renderFavorites();
   renderRecent();
   attachEventListeners();
+  checkPopupPermission();
 }
 
 function initTheme() {
@@ -53,6 +57,93 @@ function setTheme(theme) {
 function toggleTheme() {
   const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
   setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+}
+
+/**
+ * Check if popups are allowed by attempting to open a test window
+ * This works reliably on Firefox, Chrome, and other browsers
+ */
+function checkPopupPermission() {
+  // Try to open a blank popup to test permission
+  const testPopup = window.open('about:blank', '_blank', 'width=1,height=1,left=-9999,top=-9999');
+  
+  if (testPopup) {
+    // Popup opened successfully - close it immediately
+    testPopup.close();
+    popupsAllowed = true;
+    updatePopupWarning(true);
+  } else {
+    // Popup was blocked
+    popupsAllowed = false;
+    updatePopupWarning(false);
+  }
+}
+
+/**
+ * Request popup permission by showing instructions and letting user trigger a popup
+ */
+function requestPopupPermission() {
+  // User-initiated click - try opening a test popup
+  const testPopup = window.open('about:blank', '_blank');
+  
+  if (testPopup) {
+    testPopup.close();
+    popupsAllowed = true;
+    updatePopupWarning(true);
+    showToast('Pop-ups enabled! You can now search.', 'success');
+  } else {
+    popupsAllowed = false;
+    showToast('Pop-ups still blocked. Please allow pop-ups in your browser settings.', 'error');
+    showPopupInstructions();
+  }
+}
+
+/**
+ * Show browser-specific instructions for enabling popups
+ */
+function showPopupInstructions() {
+  const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
+  const isChrome = navigator.userAgent.toLowerCase().includes('chrome');
+  
+  let instructions = '';
+  if (isFirefox) {
+    instructions = 'Firefox: Click the icon in the address bar and select "Allow pop-ups for this site"';
+  } else if (isChrome) {
+    instructions = 'Chrome: Click the blocked popup icon in the address bar and select "Always allow"';
+  } else {
+    instructions = 'Please check your browser settings to allow pop-ups for this site';
+  }
+  
+  showToast(instructions, 'info');
+}
+
+/**
+ * Update the popup warning UI based on permission status
+ */
+function updatePopupWarning(allowed) {
+  const warningEl = document.querySelector('.popup-warning');
+  if (!warningEl) return;
+  
+  if (allowed) {
+    warningEl.classList.add('popup-allowed');
+    warningEl.innerHTML = `
+      <span class="popup-warning-icon">✅</span>
+      <span>Pop-ups enabled! Ready to search multiple platforms.</span>
+    `;
+  } else {
+    warningEl.classList.remove('popup-allowed');
+    warningEl.innerHTML = `
+      <span class="popup-warning-icon">⚠️</span>
+      <span>Pop-ups are blocked. </span>
+      <button type="button" class="popup-enable-btn" id="enablePopupsBtn">Click to Enable Pop-ups</button>
+    `;
+    
+    // Attach event listener to the new button
+    const enableBtn = document.getElementById('enablePopupsBtn');
+    if (enableBtn) {
+      enableBtn.addEventListener('click', requestPopupPermission);
+    }
+  }
 }
 
 function renderPlatforms() {
